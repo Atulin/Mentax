@@ -4,6 +4,15 @@ Symfony Demo Application
 The "Symfony Demo Application" is a reference application created to show how
 to develop applications following the [Symfony Best Practices][1].
 
+Disclaimer
+----------
+
+Do forgive me a full commit history, I did a full `git clone` here, and by the
+time I realized what I did, too much has already been done.
+
+Treat commit [86ad3471bab612f60dadf2519f9aae8e541bc61e](https://github.com/Atulin/Mentax/commit/86ad3471bab612f60dadf2519f9aae8e541bc61e)
+as the actual "base" of this project
+
 Requirements
 ------------
 
