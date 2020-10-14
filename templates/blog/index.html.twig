@@ -35,10 +35,27 @@
                 {% endif %}
 
                 {% for i in 1..paginator.lastPage %}
-                    {% if i == paginator.currentPage %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">{{ 'paginator.current'|trans }}</span></span></li>
-                    {% else %}
-                        <li><a href="{{ path('blog_index_paginated', {page: i, tag: tagName}) }}">{{ i }}</a></li>
+                    {%  if (i in 0..2)
+                        or (i in paginator.lastPage - 1..paginator.lastPage)
+                        or (i in paginator.currentPage-1..paginator.currentPage+1)
+                        or (i == paginator.lastPage / 2|round) %}
+
+                        {% if (i == paginator.lastPage / 2|round) and (i not in paginator.currentPage-1..paginator.currentPage+1) %}
+                            {% set midText = "... #{i} ..." %}
+                        {% elseif (i == paginator.lastPage / 2|round) and (paginator.currentPage == (paginator.lastPage / 2|round) - 1) %}
+                            {% set midText = "#{i} ..." %}
+                        {% elseif (i == paginator.lastPage / 2|round) and (paginator.currentPage == (paginator.lastPage / 2|round) + 1) %}
+                            {% set midText = "... #{i}" %}
+                        {% else %}
+                            {% set midText = i %}
+                        {% endif %}
+
+                        {% if i == paginator.currentPage %}
+                            <li class="active"><span>{{ midText }}<span class="sr-only">{{ 'paginator.current'|trans }}</span></span></li>
+                        {% else %}
+                            <li><a href="{{ path('blog_index_paginated', {page: i, tag: tagName}) }}">{{ midText }}</a></li>
+                        {% endif %}
+
                     {% endif %}
                 {% endfor %}
 
