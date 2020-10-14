@@ -55,6 +55,9 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string $query
+     * @param int    $limit
+     *
      * @return Post[]
      */
     public function findBySearchQuery(string $query, int $limit = Paginator::PAGE_SIZE): array
@@ -81,8 +84,13 @@ class PostRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
     /**
      * Transforms the search string into an array of search terms.
+     *
+     * @param string $searchQuery
+     *
+     * @return array
      */
     private function extractSearchTerms(string $searchQuery): array
     {

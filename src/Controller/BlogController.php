@@ -18,6 +18,7 @@ use App\Form\CommentType;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,8 +71,13 @@ class BlogController extends AbstractController
      * after performing a database query looking for a Post with the 'slug'
      * value given in the route.
      * See https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/converters.html
+     *
+     * @param Post             $post
+     * @param SessionInterface $session
+     *
+     * @return Response
      */
-    public function postShow(Post $post): Response
+    public function postShow(Post $post, SessionInterface $session): Response
     {
         // Symfony's 'dump()' function is an improved version of PHP's 'var_dump()' but
         // it's not available in the 'prod' environment to prevent leaking sensitive information.
@@ -79,6 +85,16 @@ class BlogController extends AbstractController
         // have enabled the DebugBundle. Uncomment the following line to see it in action:
         //
         // dump($post, $this->getUser(), new \DateTime());
+
+        // Increment views
+        if ($session->get($post->getId()) !== true) {
+            $post->addView();
+            $this
+                ->getDoctrine()
+                ->getManager()
+                ->flush();
+            $session->set($post->getId(), true);
+        }
 
         return $this->render('blog/post_show.html.twig', ['post' => $post]);
     }
@@ -167,4 +183,5 @@ class BlogController extends AbstractController
 
         return $this->json($results);
     }
+
 }

@@ -115,6 +115,13 @@ class Post
      */
     private $tags;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer", options={ "default": 0 })
+     */
+    private $views;
+
     public function __construct()
     {
         $this->publishedAt = new \DateTime();
@@ -223,4 +230,26 @@ class Post
     {
         return $this->tags;
     }
+
+    /**
+     * @return int
+     */
+    public function getViews(): int
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews(int $views): void
+    {
+        $this->views = $views;
+    }
+
+    public function addView(): void
+    {
+        ++$this->views;
+    }
+
 }
